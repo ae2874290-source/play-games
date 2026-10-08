@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tic Tac Toe</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&family=IBM+Plex+Sans+Arabic:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--pk:#f50db4;--bl:#fef4ff;--wire:#f2f2f2;--line:#d9d9d9;--ink:#000;
+--mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;border-radius:0}
+html{background:#fff}
+body{margin:0;min-height:100vh;background:#fff;color:var(--ink);font:400 16px/1.5 Inter,"IBM Plex Sans Arabic","PingFang SC",ui-sans-serif,system-ui,sans-serif;overflow-x:hidden}
+.wrap{width:min(520px,100%);margin:0 auto;padding:12px 12px 40px}
+button,select,a{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
+button{cursor:pointer;touch-action:manipulation}
+:focus-visible{outline:2px solid var(--pk);outline-offset:2px}
+.top{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;margin-bottom:24px}
+.top>:last-child{justify-self:end}
+.wm{font:500 12px/1.33 var(--mono);letter-spacing:.2em;text-transform:uppercase;text-align:center}
+:lang(ar) .wm,:lang(ar) .tag,:lang(ar) .cap{letter-spacing:0}
+.tag{display:inline-block;font:500 12px/1 var(--mono);text-transform:uppercase;letter-spacing:.04em;background:var(--wire);color:#000;border:1px solid #e2e2e2;padding:8px;text-decoration:none}
+select.tag{appearance:none;-webkit-appearance:none}
+.tag.pk,.tag[aria-pressed="true"]{background:var(--pk);color:#fff;border-color:var(--pk)}
+.tags{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:24px}
+.row{display:flex;gap:4px}
+.sb{display:flex;justify-content:center;align-items:center;gap:12px;margin-bottom:8px}
+.pl{display:flex;align-items:center;gap:4px;position:relative}
+.pl small{position:absolute;top:-18px;inset-inline:0;font:500 11px var(--mono);text-transform:uppercase;white-space:nowrap}
+.pl.on{outline:1px solid var(--pk);outline-offset:4px}
+.pl.on small{color:var(--pk)}
+.id{width:36px;height:36px;display:grid;place-items:center;background:#000;color:#fff;font:700 16px var(--mono);font-style:normal}
+.pl b{min-width:36px;height:36px;display:grid;place-items:center;border:1px solid #000;font:700 18px var(--mono)}
+.pl.win b{background:var(--pk);border-color:var(--pk);color:#fff}
+.vs{font:700 clamp(32px,10vw,44px)/1 var(--mono);letter-spacing:-.02em;color:var(--pk);padding:0 4px}
+.cap{text-align:center;font:500 12px var(--mono);text-transform:uppercase;letter-spacing:.04em;margin:28px 0 8px}
+.pitch{position:relative;isolation:isolate}
+.pitch:before{content:"";position:absolute;z-index:-1;left:50%;top:50%;width:135%;aspect-ratio:1;transform:translate(-50%,-50%);border:1px solid #ececec;border-radius:50%}
+.g{display:grid;aspect-ratio:1;gap:1px;background:var(--line);border:1px solid #000}
+.c{background:#fff;border:0;padding:0;display:block;min-width:0;min-height:0}
+.c.hit{background:var(--pk)}
+@media (hover:hover){.c:not(.f):hover{background:var(--bl)}}
+.c svg{width:64%;height:64%;margin:18%;display:block;animation:in .15s ease-out}
+@keyframes in{from{opacity:0}}
+@media (prefers-reduced-motion:reduce){.c svg{animation:none}}
+.x path{stroke:#000;stroke-width:8;fill:none;stroke-linecap:square}
+.o circle{stroke:#000;stroke-width:8;fill:none}
+.hit .x path,.hit .o circle{stroke:#fff}
+.res{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:16px;padding:8px;background:var(--bl);border:1px solid var(--pk)}
+.res[hidden]{display:none}
+.res b{font:700 16px var(--mono)}
+.btn{background:#000;color:#fff;border:1px solid #000;padding:10px 16px;font:500 12px/1 var(--mono);text-transform:uppercase;letter-spacing:.04em}
+.btn:hover{background:var(--pk);border-color:var(--pk)}
+.foot{margin-top:24px;display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><a class="tag" id="bk" href="../index.html#games"></a><div class="wm" data-t="ttl"></div></header>
+
+<div class="tags"><div class="row" id="os"></div><span class="tag pk" id="rd">R1</span></div>
+
+<section class="sb">
+<div class="pl" id="px"><small id="lx"></small><i class="id">X</i><b id="sx">0</b></div>
+<div class="vs">VS</div>
+<div class="pl" id="po"><small id="lo"></small><b id="so">0</b><i class="id">O</i></div>
+</section>
+
+<div class="cap" id="ln"></div>
+<div class="pitch"><div class="g" id="g"></div></div>
+
+<div class="res" id="res" role="status" hidden><span class="tag pk" id="wt" data-t="wn"></span><b id="rt"></b><button class="btn" id="ag" data-t="again"></button></div>
+<div class="foot"><button class="tag" id="rst"></button></div>
+</div>
+
+<script>
+var TT={en:{ttl:"Tic Tac Toe",back:"← All games",ai:"VS AI",you:"YOU",bot:"AI",win:"{m} wins!",draw:"It's a draw",again:"Play again",line:"{n} in a row",wn:"Winner",turn:"Turn",rs:"↻ Restart"},
+ar:{ttl:"إكس أو",back:"→ كل الألعاب",ai:"ضد الكمبيوتر",you:"أنت",bot:"الكمبيوتر",win:"فاز {m}!",draw:"تعادل",again:"العب مجدداً",line:"{n} متتالية",wn:"الفائز",turn:"الدور",rs:"↻ إعادة"},
+es:{ttl:"Tres en raya",back:"← Todos los juegos",ai:"VS IA",you:"TÚ",bot:"IA",win:"¡Gana {m}!",draw:"Empate",again:"Jugar de nuevo",line:"{n} en línea",wn:"Ganador",turn:"Turno",rs:"↻ Reiniciar"},
+fr:{ttl:"Morpion",back:"← Tous les jeux",ai:"VS IA",you:"TOI",bot:"IA",win:"{m} gagne !",draw:"Match nul",again:"Rejouer",line:"{n} alignés",wn:"Vainqueur",turn:"Tour",rs:"↻ Recommencer"},
+de:{ttl:"Tic Tac Toe",back:"← Alle Spiele",ai:"VS KI",you:"DU",bot:"KI",win:"{m} gewinnt!",draw:"Unentschieden",again:"Nochmal",line:"{n} in Folge",wn:"Sieger",turn:"Zug",rs:"↻ Neustart"},
+zh:{ttl:"井字棋",back:"← 所有游戏",ai:"人机对战",you:"你",bot:"电脑",win:"{m} 获胜！",draw:"平局",again:"再来一局",line:"连成 {n} 个",wn:"获胜者",turn:"回合",rs:"↻ 重来"}};
+var l="en";try{l=localStorage.getItem("lang")||"en"}catch(e){}
+if(!TT[l])l="en";
+var $=function(i){return document.getElementById(i)},t,R=document.documentElement;
+function lang(x){l=x;t=TT[x];R.lang=x;R.dir=x==="ar"?"rtl":"ltr";
+document.querySelectorAll("[data-t]").forEach(function(e){e.textContent=t[e.dataset.t]});
+$("bk").textContent=t.back;$("rst").textContent=t.rs;
+try{localStorage.setItem("lang",x)}catch(e){}}
+lang(l);
+
+var SZ=[[3,3],[6,4],[9,5]],si=0,N=3,W=3,B,turn,starter="X",over,aiT,rd=1,sc={X:0,O:0};
+var DIRS=[[1,0],[0,1],[1,1],[1,-1]];
+function opts(){var o=$("os");o.innerHTML="";
+SZ.forEach(function(s,i){var b=document.createElement("button");b.className="tag";b.setAttribute("aria-pressed",i===si);
+b.textContent=s[0]+"×"+s[0];b.onclick=function(){si=i;opts();begin()};o.appendChild(b)})}
+function mk(p){return p==="X"?'<svg class="x" viewBox="0 0 100 100"><path d="M18 18L82 82M82 18L18 82"/></svg>':'<svg class="o" viewBox="0 0 100 100"><circle cx="50" cy="50" r="31"/></svg>'}
+function labels(){
+$("lx").textContent=turn==="X"&&!over?t.turn+" · "+t.you:t.you;$("lo").textContent=turn==="O"&&!over?t.turn+" · "+t.bot:t.bot;
+$("sx").textContent=sc.X;$("so").textContent=sc.O;
+$("px").classList.toggle("on",!over&&turn==="X");$("po").classList.toggle("on",!over&&turn==="O");
+$("ln").textContent=t.line.replace("{n}",W)}
+function begin(){N=SZ[si][0];W=SZ[si][1];sc={X:0,O:0};starter="X";rd=1;round()}
+function round(){
+clearTimeout(aiT);
+B=[];for(var i=0;i<N*N;i++)B.push("");
+over=false;turn=starter;$("res").hidden=true;$("px").classList.remove("win");$("po").classList.remove("win");$("rd").textContent="R"+rd;
+var g=$("g");g.innerHTML="";g.style.gridTemplateColumns="repeat("+N+",minmax(0,1fr))";g.style.gridTemplateRows="repeat("+N+",minmax(0,1fr))";
+for(var k=0;k<N*N;k++)(function(k){var c=document.createElement("button");c.className="c";c.setAttribute("aria-label",(Math.floor(k/N)+1)+","+(k%N+1));
+c.onclick=function(){if(turn==="O"||over)return;play(k)};g.appendChild(c)})(k);
+labels();if(turn==="O")aiT=setTimeout(ai,500)}
+function run(x,y,dx,dy,p){var n=0,open=0;
+for(var k=1;;k++){var nx=x+dx*k,ny=y+dy*k;if(nx<0||ny<0||nx>=N||ny>=N)break;var v=B[ny*N+nx];if(v===p)n++;else{if(v==="")open=1;break}}
+return[n,open]}
+function wincells(i){var x=i%N,y=(i/N)|0,p=B[i];
+for(var d=0;d<4;d++){var dx=DIRS[d][0],dy=DIRS[d][1],a=run(x,y,dx,dy,p),b=run(x,y,-dx,-dy,p);
+if(1+a[0]+b[0]>=W){var r=[];for(var k=-b[0];k<=a[0];k++)r.push((y+dy*k)*N+(x+dx*k));return r}}
+return null}
+function play(i){
+if(over||B[i])return;
+B[i]=turn;var c=$("g").children[i];c.classList.add("f");c.innerHTML=mk(turn);
+var w=wincells(i);
+if(w)return end(w);
+if(B.every(Boolean))return end(null);
+turn=turn==="X"?"O":"X";labels();
+if(turn==="O")aiT=setTimeout(ai,450)}
+function pot(x,y,p){var s=0;
+DIRS.forEach(function(d){var a=run(x,y,d[0],d[1],p),b=run(x,y,-d[0],-d[1],p),len=1+a[0]+b[0];
+if(len>=W)s+=1e6;else if(a[1]+b[1]>0)s+=Math.pow(10,len)*(a[1]+b[1])});return s}
+function ai(){
+if(over||turn!=="O")return;
+var best=-1,mv=0,m=(N-1)/2;
+for(var i=0;i<N*N;i++){if(B[i])continue;var x=i%N,y=(i/N)|0;
+var s=pot(x,y,"O")*1.05+pot(x,y,"X")-(Math.abs(x-m)+Math.abs(y-m))*.5+Math.random();
+if(s>best){best=s;mv=i}}
+play(mv)}
+function end(w){
+over=true;clearTimeout(aiT);
+if(w){sc[turn]++;w.forEach(function(k){$("g").children[k].classList.add("hit")});$((turn==="X"?"px":"po")).classList.add("win")}
+labels();
+$("wt").hidden=!w;$("rt").textContent=w?t.win.replace("{m}",turn):t.draw;$("res").hidden=false}
+$("ag").onclick=function(){rd++;starter=starter==="X"?"O":"X";round()};
+$("rst").onclick=begin;
+
+opts();begin();
+</script>
+</body>
+</html>
