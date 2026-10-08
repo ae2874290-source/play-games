@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Play — Browser Games</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&family=IBM+Plex+Sans+Arabic:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--blurple:#5865f2;--deep:#161cbb;--dark:#23272a;--ink:#23272a;--paper:#fff;--soft:#f2f3ff;--dkbtn:#23272a;--offbg:rgba(0,0,0,.12);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#1e1f22;--ink:#f2f3f5;--soft:#2b2d31;--dkbtn:#5865f2;--offbg:rgba(255,255,255,.14)}}
+:root[data-theme="dark"]{--paper:#1e1f22;--ink:#f2f3f5;--soft:#2b2d31;--dkbtn:#5865f2;--offbg:rgba(255,255,255,.14)}
+*{box-sizing:border-box}
+html{background:var(--dark);scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:600 18px/1.55 Nunito,"IBM Plex Sans Arabic","PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+.btn{display:inline-flex;align-items:center;border-radius:28px;padding:14px 28px;font:800 17px/1 inherit;font-family:inherit;text-decoration:none;cursor:pointer;border:0;background:#fff;color:var(--blurple);transition:background .15s,color .15s,transform .15s}
+.btn:hover{background:var(--dark);color:#fff}
+.btn.dk{background:var(--dkbtn);color:#fff}
+.btn.dk:hover{background:#fff;color:var(--blurple)}
+.btn.off{background:var(--offbg);color:var(--ink);cursor:default}
+.btn:focus-visible,select:focus-visible{outline:3px solid #fff;outline-offset:3px}
+h1,h2{font-weight:900;text-transform:uppercase;line-height:1.05;margin:0}
+.hero{position:relative;overflow:hidden;background:var(--blurple);color:#fff;text-align:center;padding:170px 20px 90px}
+.hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 120%,var(--deep),transparent 70%)}
+.hero>*{position:relative}
+nav{position:absolute;top:calc(20px + env(safe-area-inset-top,0px));inset-inline:0;display:flex;justify-content:space-between;align-items:center;gap:8px;max-width:1200px;margin:0 auto;padding:0 20px;padding-inline-end:76px;z-index:2}
+.logo{font-weight:900;font-size:28px}
+.side{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+select{font:800 15px inherit;font-family:inherit;color:#fff;background:rgba(255,255,255,.18);border:0;border-radius:24px;padding:10px 14px;cursor:pointer}
+select option{color:#000}
+nav .btn{padding:9px 16px;font-size:14px}
+h1{font-size:clamp(40px,9vw,88px);max-width:11em;margin:0 auto 20px}
+.hero p{max-width:34em;margin:0 auto 32px;font-size:20px}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.float{display:flex;justify-content:center;gap:12px;margin-top:40px}
+.fl{width:clamp(60px,16vw,92px);aspect-ratio:1;border-radius:28px;display:grid;place-items:center;box-shadow:0 12px 0 rgba(0,0,0,.18)}
+.fl svg,.art svg{width:55%;fill:none;stroke:#fff;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.fl:nth-child(1){background:#eb459e;transform:rotate(-9deg) translateY(10px)}
+.fl:nth-child(2){background:#3ba55c;transform:translateY(-10px)}
+.fl:nth-child(3){background:#faa61a;transform:rotate(9deg) translateY(10px)}
+.band{background:var(--dark);color:#fff;overflow:hidden;white-space:nowrap;padding:18px 0}
+.track{display:inline-flex;gap:36px;animation:go 22s linear infinite;font-weight:900;font-size:28px;text-transform:uppercase}
+.track span:nth-child(even){color:var(--blurple)}
+@keyframes go{to{transform:translateX(-50%)}}
+[dir=rtl] .track{animation-direction:reverse}
+@media (prefers-reduced-motion:reduce){.track{animation:none}}
+.feat{display:flex;align-items:center;justify-content:center;gap:40px;padding:64px 20px}
+.feat:nth-of-type(even){background:var(--soft);flex-direction:row-reverse}
+.art{flex:none;width:min(220px,60vw);aspect-ratio:1;border-radius:32px;display:grid;place-items:center;box-shadow:0 10px 0 rgba(0,0,0,.12)}
+.txt{max-width:30em}
+h2{font-size:clamp(32px,5vw,52px);margin-bottom:16px}
+.txt p{margin:0 0 24px}
+@media (max-width:820px){.feat,.feat:nth-of-type(even){flex-direction:column;gap:28px;padding:48px 20px;text-align:center}}
+.cta{background:var(--blurple);color:#fff;text-align:center;padding:110px 20px}
+.cta h2{max-width:12em;margin:0 auto 32px;font-size:clamp(34px,7vw,72px)}
+footer{background:var(--dark);color:#b9bbbe;text-align:center;padding:36px 20px;font-size:15px}
+.ghost{background:rgba(255,255,255,.18);color:#fff}
+.ghost:hover{background:#fff;color:var(--blurple)}
+@media (max-width:560px){nav{flex-wrap:wrap}.side{width:100%}.hero{padding-top:240px}}
+.tg{position:fixed;top:calc(16px + env(safe-area-inset-top,0px));inset-inline-end:16px;z-index:20;width:48px;height:48px;border-radius:50%;border:2px solid rgba(255,255,255,.25);background:#23272a;color:#fff;box-shadow:0 6px 0 rgba(0,0,0,.2);display:grid;place-items:center;cursor:pointer}
+.tg:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.tg svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.tg .sun{display:none}
+:root[data-theme="dark"] .tg .moon{display:none}
+:root[data-theme="dark"] .tg .sun{display:block}
+dialog{border:0;border-radius:28px;padding:28px;width:min(400px,92vw);background:var(--paper);color:var(--ink);box-shadow:0 20px 60px rgba(0,0,0,.45)}
+dialog::backdrop{background:rgba(0,0,0,.6)}
+dialog h2{font-size:28px;margin-bottom:12px}
+dialog p{margin:0 0 18px;font-size:16px}
+label{display:block;margin-bottom:14px;font-size:15px}
+label input{display:block;width:100%;margin-top:6px;padding:12px 14px;border-radius:12px;border:2px solid rgba(128,128,128,.4);background:var(--soft);color:var(--ink);font:inherit}
+label input:focus{outline:0;border-color:var(--blurple)}
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.pp{background:#ffc439;color:#111}
+.pp:hover{background:#f0b429;color:#111}
+.nt{color:var(--blurple)}
+.ic{position:absolute;width:min(var(--s,56px),20vw);aspect-ratio:1;height:auto;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transform:rotate(var(--r,0deg));pointer-events:none}
+.deco{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.hero>.deco{position:absolute}
+.hero .ic{color:#fff;opacity:.3}
+.feat .ic{color:var(--ink);opacity:.09}
+.cta .ic{color:#fff;opacity:.28}
+.feat,.cta{position:relative;overflow:hidden}
+.feat>:not(.deco),.cta>:not(.deco){position:relative;z-index:1}
+@media (max-width:560px){.hero .ic.s{display:none}.hero .ic{opacity:.22}}
+</style>
+</head>
+<body>
+<button class="tg" id="tg" aria-pressed="false"><svg class="moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+<header class="hero">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-pad" viewBox="0 0 48 48"><path d="M14 16h20a9 9 0 0 1 8.6 6.6l2.2 8.4a5 5 0 0 1-8.2 4.9L33 31H15l-3.6 4.9a5 5 0 0 1-8.2-4.9l2.2-8.4A9 9 0 0 1 14 16z"/><path d="M16 21v6M13 24h6"/><circle cx="31" cy="22.5" r="1.4"/><circle cx="35" cy="26" r="1.4"/></symbol>
+<symbol id="i-joy" viewBox="0 0 48 48"><circle cx="24" cy="12" r="6"/><path d="M24 18v14M10 40h28v-4a4 4 0 0 0-4-4H14a4 4 0 0 0-4 4z"/></symbol>
+<symbol id="i-dice" viewBox="0 0 48 48"><rect x="8" y="8" width="32" height="32" rx="6"/><circle cx="17" cy="17" r="2"/><circle cx="31" cy="17" r="2"/><circle cx="24" cy="24" r="2"/><circle cx="17" cy="31" r="2"/><circle cx="31" cy="31" r="2"/></symbol>
+<symbol id="i-star" viewBox="0 0 48 48"><path d="M24 6l5.4 11 12.1 1.7-8.8 8.5 2.1 12L24 33.5 13.2 39.2l2.1-12-8.8-8.5L18.6 17z"/></symbol>
+<symbol id="i-coin" viewBox="0 0 48 48"><circle cx="24" cy="24" r="14"/><circle cx="24" cy="24" r="8"/></symbol>
+<symbol id="i-dpad" viewBox="0 0 48 48"><path d="M18 8h12v10h10v12H30v10H18V30H8V18h10z"/></symbol>
+<symbol id="i-tro" viewBox="0 0 48 48"><path d="M16 8h16v10a8 8 0 0 1-16 0zM16 12H8v3a6 6 0 0 0 8 5.6M32 12h8v3a6 6 0 0 1-8 5.6M24 26v8M19 34h10v6H19z"/></symbol>
+<symbol id="i-tri" viewBox="0 0 48 48"><path d="M24 10l14 24H10z"/></symbol>
+<symbol id="i-circ" viewBox="0 0 48 48"><circle cx="24" cy="24" r="12"/></symbol>
+<symbol id="i-x" viewBox="0 0 48 48"><path d="M12 12l24 24M36 12L12 36"/></symbol>
+<symbol id="i-sq" viewBox="0 0 48 48"><rect x="12" y="12" width="24" height="24"/></symbol>
+<symbol id="i-plus" viewBox="0 0 48 48"><path d="M24 10v28M10 24h28"/></symbol>
+</defs></svg>
+<div class="deco" aria-hidden="true">
+<svg class="ic" style="left:5%;top:22%;--s:96px;--r:-14deg"><use href="#i-pad"/></svg>
+<svg class="ic" style="right:6%;top:20%;--s:84px;--r:12deg"><use href="#i-joy"/></svg>
+<svg class="ic" style="left:11%;bottom:12%;--s:64px;--r:16deg"><use href="#i-dice"/></svg>
+<svg class="ic" style="right:11%;bottom:16%;--s:72px;--r:-10deg"><use href="#i-tro"/></svg>
+<svg class="ic" style="left:3%;bottom:38%;--s:52px;--r:8deg"><use href="#i-dpad"/></svg>
+<svg class="ic" style="right:3%;bottom:44%;--s:44px;--r:-8deg"><use href="#i-tri"/></svg>
+<svg class="ic s" style="left:24%;top:14%;--s:36px"><use href="#i-star"/></svg>
+<svg class="ic s" style="right:24%;top:16%;--s:40px"><use href="#i-coin"/></svg>
+<svg class="ic s" style="left:30%;bottom:8%;--s:30px"><use href="#i-circ"/></svg>
+<svg class="ic s" style="right:32%;bottom:10%;--s:30px"><use href="#i-x"/></svg>
+<svg class="ic s" style="left:18%;top:46%;--s:26px"><use href="#i-plus"/></svg>
+<svg class="ic s" style="right:19%;top:50%;--s:26px"><use href="#i-sq"/></svg>
+</div>
+<nav><span class="logo">Play</span>
+<div class="side"><select id="lang" aria-label="Language"></select><button class="btn" id="sp" data-t="support"></button><button class="btn ghost" id="lg" data-t="login"></button></div></nav>
+<h1 data-t="h1"></h1>
+<p data-t="sub"></p>
+<div class="row"><a class="btn" href="games/memory.html" data-t="c1"></a><a class="btn dk" href="#games" data-t="c2"></a></div>
+<div class="float" aria-hidden="true">
+<div class="fl"><svg viewBox="0 0 48 48"><rect x="6" y="6" width="16" height="16" rx="4"/><rect x="26" y="26" width="16" height="16" rx="4"/><rect x="26" y="6" width="16" height="16" rx="4"/><rect x="6" y="26" width="16" height="16" rx="4"/></svg></div>
+<div class="fl"><svg viewBox="0 0 48 48"><path d="M6 36h24V16h12"/><circle cx="42" cy="16" r="2"/></svg></div>
+<div class="fl"><svg viewBox="0 0 48 48"><circle cx="16" cy="24" r="8"/><path d="M24 24h18M36 24v8"/></svg></div>
+</div>
+</header>
+
+<div class="band" aria-hidden="true"><div class="track" id="track"></div></div>
+
+<main id="games">
+<section class="feat">
+<div class="art" style="background:#5865f2"><svg viewBox="0 0 48 48"><rect x="6" y="6" width="16" height="16" rx="4"/><rect x="26" y="26" width="16" height="16" rx="4"/><rect x="26" y="6" width="16" height="16" rx="4"/><rect x="6" y="26" width="16" height="16" rx="4"/></svg></div>
+<div class="txt"><h2 data-t="g1"></h2><p data-t="d1"></p><a class="btn dk" href="games/memory.html" data-t="play"></a></div>
+</section>
+<section class="feat">
+<div class="art" style="background:#3ba55c"><svg viewBox="0 0 48 48"><path d="M6 36h24V16h12"/><circle cx="42" cy="16" r="2"/></svg></div>
+<div class="txt"><h2 data-t="g2"></h2><p data-t="d2"></p><a class="btn dk" href="games/snake.html" data-t="play"></a></div>
+</section>
+<section class="feat">
+<div class="art" style="background:#eb459e"><svg viewBox="0 0 48 48"><circle cx="16" cy="24" r="8"/><path d="M24 24h18M36 24v8"/></svg></div>
+<div class="txt"><h2 data-t="g3"></h2><p data-t="d3"></p><a class="btn dk" href="games/glass-loop.html" data-t="play"></a></div>
+</section>
+<section class="feat">
+<div class="art" style="background:#7c3aed"><svg viewBox="0 0 48 48"><path d="M8 8l14 14M22 8L8 22"/><circle cx="34" cy="34" r="8"/></svg></div>
+<div class="txt"><h2 data-t="g4"></h2><p data-t="d4"></p><a class="btn dk" href="games/tic-tac-toe.html" data-t="play"></a></div>
+</section>
+<section class="feat">
+<div class="art" style="background:#f59e0b"><svg viewBox="0 0 48 48"><rect x="12" y="14" width="20" height="20"/><path d="M32 22h6M18 14v-4h6v4"/></svg></div>
+<div class="txt"><h2 data-t="g5"></h2><p data-t="d5"></p><a class="btn dk" href="games/hop-road.html" data-t="play"></a></div>
+</section>
+</main>
+
+<section class="cta"><h2 data-t="f"></h2><a class="btn" href="games/memory.html" data-t="fc"></a></section>
+<footer data-t="foot"></footer>
+
+<dialog id="dlg"><h2 data-t="login"></h2>
+<form id="lf"><label><span data-t="email"></span><input type="email" required autocomplete="email"></label>
+<label><span data-t="pass"></span><input type="password" required autocomplete="current-password"></label>
+<p class="nt" id="nt" hidden data-t="note"></p>
+<div class="acts"><button class="btn dk" type="submit" data-t="go"></button><button class="btn off" type="button" id="c1" data-t="close"></button></div></form></dialog>
+<dialog id="dsp"><h2 data-t="st"></h2><p data-t="sx"></p>
+<div class="acts"><a class="btn pp" id="ppl" target="_blank" rel="noopener" data-t="pp"></a><button class="btn off" type="button" id="c2" data-t="close"></button></div></dialog>
+
+<script>
+var L={
+en:{login:"Log in",support:"Support us",theme:"Toggle dark mode",email:"Email",pass:"Password",go:"Log in",note:"Accounts aren't connected yet — coming soon.",st:"Support the site",sx:"Play is free. If you enjoy it, a small donation helps us build more games.",pp:"Donate with PayPal",close:"Close",nav:"Play now",h1:"Games that are all fun & instant",sub:"Jump into light, beautiful games right in your browser. No download, no sign-up — just play with a click.",c1:"Play in your browser",c2:"Browse games",m:"play|win|chill|repeat",g1:"Memory Game",d1:"Flip cards, match the pairs and beat your best score. Easy to start, hard to put down.",g2:"Snake",d2:"Eat the apples, grow longer and don't bump into yourself. A classic that never gets old.",g3:"Glass Loop",d3:"Rotate the glass tiles to connect every line into closed loops.",g4:"Tic Tac Toe",d4:"Play against a friend or the AI on 3×3, 6×6 or 9×9 neon boards.",g5:"Hop Road",d5:"Hop across busy roads and rivers without getting squashed. How far can you go?",play:"Play",soon:"Coming soon",f:"You can't scroll anymore. Better go play.",fc:"Start playing",foot:"© Play — browser games"},
+ar:{login:"تسجيل الدخول",support:"ادعم الموقع",theme:"تبديل الوضع المظلم",email:"البريد الإلكتروني",pass:"كلمة المرور",go:"دخول",note:"الحسابات غير مفعّلة بعد، قريباً.",st:"ادعم الموقع",sx:"الموقع مجاني. إن أعجبتك الألعاب، فتبرع صغير يساعدنا على بناء المزيد.",pp:"ادعم عبر PayPal",close:"إغلاق",nav:"العب الآن",h1:"ألعاب ممتعة وتلعب فوراً",sub:"ادخل إلى ألعاب خفيفة وجميلة من المتصفح مباشرة. بلا تحميل ولا تسجيل، فقط اضغط والعب.",c1:"العب من المتصفح",c2:"تصفح الألعاب",m:"العب|اربح|استمتع|أعد",g1:"لعبة الذاكرة",d1:"اقلب البطاقات وطابق الأزواج وحطّم رقمك القياسي. سهلة البداية وصعبة التوقف.",g2:"الثعبان",d2:"كُل التفاح وكِبْر دون أن تصطدم بنفسك. لعبة كلاسيكية لا تُمل.",g3:"حلقات زجاجية",d3:"دوّر البلاطات الزجاجية لتصل كل الخطوط في حلقات مغلقة.",g4:"إكس أو",d4:"العب ضد صديق أو الكمبيوتر على لوحات نيون 3×3 أو 6×6 أو 9×9.",g5:"Hop Road",d5:"اقفز عبر الطرق المزدحمة والأنهار دون أن تُدهس. إلى أي مدى تصل؟",play:"العب",soon:"قريباً",f:"لا مزيد من التمرير. حان وقت اللعب.",fc:"ابدأ اللعب",foot:"© Play — ألعاب المتصفح"},
+es:{login:"Iniciar sesión",support:"Apóyanos",theme:"Cambiar modo oscuro",email:"Correo electrónico",pass:"Contraseña",go:"Entrar",note:"Las cuentas aún no están conectadas: próximamente.",st:"Apoya el sitio",sx:"Play es gratis. Si te gusta, una pequeña donación nos ayuda a crear más juegos.",pp:"Donar con PayPal",close:"Cerrar",nav:"Jugar ya",h1:"Juegos divertidos al instante",sub:"Entra en juegos ligeros y preciosos desde tu navegador. Sin descargas ni registro: solo un clic y a jugar.",c1:"Jugar en el navegador",c2:"Ver juegos",m:"juega|gana|relájate|repite",g1:"Memoria",d1:"Voltea cartas, empareja y supera tu mejor marca. Fácil de empezar, difícil de dejar.",g2:"Serpiente",d2:"Come manzanas, crece y no choques contigo mismo. Un clásico eterno.",g3:"Bucle de cristal",d3:"Gira los cristales para unir todas las líneas en bucles cerrados.",g4:"Tres en raya",d4:"Juega contra un amigo o la IA en tableros de neón 3×3, 6×6 o 9×9.",g5:"Hop Road",d5:"Salta por carreteras y ríos sin que te atropellen. ¿Hasta dónde llegas?",play:"Jugar",soon:"Próximamente",f:"Ya no hay más que ver. Hora de jugar.",fc:"Empezar a jugar",foot:"© Play — juegos en el navegador"},
+fr:{login:"Connexion",support:"Nous soutenir",theme:"Activer le mode sombre",email:"E-mail",pass:"Mot de passe",go:"Se connecter",note:"Les comptes ne sont pas encore connectés : bientôt disponibles.",st:"Soutenir le site",sx:"Play est gratuit. Si vous aimez, un petit don nous aide à créer plus de jeux.",pp:"Faire un don via PayPal",close:"Fermer",nav:"Jouer",h1:"Des jeux fun et instantanés",sub:"Plongez dans des jeux légers et soignés, directement dans votre navigateur. Sans téléchargement ni inscription : un clic et c'est parti.",c1:"Jouer dans le navigateur",c2:"Voir les jeux",m:"joue|gagne|détends-toi|recommence",g1:"Mémoire",d1:"Retournez les cartes, associez les paires et battez votre record. Facile à lancer, dur à lâcher.",g2:"Serpent",d2:"Mangez des pommes, grandissez et évitez-vous. Un classique intemporel.",g3:"Boucle de verre",d3:"Fais pivoter les tuiles de verre pour relier toutes les lignes en boucles fermées.",g4:"Morpion",d4:"Affrontez un ami ou l'IA sur des grilles néon 3×3, 6×6 ou 9×9.",g5:"Hop Road",d5:"Traverse routes et rivières sans te faire écraser. Jusqu'où iras-tu ?",play:"Jouer",soon:"Bientôt",f:"Plus rien à faire défiler. Place au jeu.",fc:"Commencer à jouer",foot:"© Play — jeux dans le navigateur"},
+de:{login:"Anmelden",support:"Unterstützen",theme:"Dunkelmodus umschalten",email:"E-Mail",pass:"Passwort",go:"Anmelden",note:"Konten sind noch nicht verbunden – bald verfügbar.",st:"Die Seite unterstützen",sx:"Play ist kostenlos. Wenn es dir gefällt, hilft eine kleine Spende, mehr Spiele zu bauen.",pp:"Mit PayPal spenden",close:"Schließen",nav:"Jetzt spielen",h1:"Spiele voller Spaß – sofort",sub:"Starte leichte, schöne Spiele direkt im Browser. Ohne Download, ohne Anmeldung – einfach klicken und loslegen.",c1:"Im Browser spielen",c2:"Spiele entdecken",m:"spielen|gewinnen|chillen|wiederholen",g1:"Memory",d1:"Karten aufdecken, Paare finden, Bestzeit knacken. Leicht zu starten, schwer zu stoppen.",g2:"Snake",d2:"Äpfel fressen, wachsen und nicht in dich selbst fahren. Ein zeitloser Klassiker.",g3:"Glasschleife",d3:"Drehe die Glaskacheln, bis alle Linien geschlossene Schleifen bilden.",g4:"Tic Tac Toe",d4:"Spiele gegen einen Freund oder die KI auf Neon-Feldern in 3×3, 6×6 oder 9×9.",g5:"Hop Road",d5:"Hüpfe über Straßen und Flüsse, ohne überfahren zu werden. Wie weit kommst du?",play:"Spielen",soon:"Demnächst",f:"Mehr zu scrollen gibt es nicht. Ab ins Spiel.",fc:"Jetzt loslegen",foot:"© Play — Browserspiele"},
+zh:{login:"登录",support:"支持我们",theme:"切换深色模式",email:"邮箱",pass:"密码",go:"登录",note:"账号功能尚未接入，敬请期待。",st:"支持本站",sx:"Play 免费开放。如果你喜欢，小额捐助能帮助我们制作更多游戏。",pp:"通过 PayPal 捐助",close:"关闭",nav:"立即开玩",h1:"好玩又即点即玩的游戏",sub:"在浏览器里直接畅玩轻量精美的游戏。无需下载，无需注册，点一下就开始。",c1:"在浏览器中游玩",c2:"浏览游戏",m:"玩|赢|放松|再来",g1:"记忆翻牌",d1:"翻牌、配对、刷新纪录。上手容易，欲罢不能。",g2:"贪吃蛇",d2:"吃苹果、变长，别撞到自己。永不过时的经典。",g3:"玻璃回路",d3:"旋转玻璃方块，把所有线条连成闭合回路。",g4:"井字棋",d4:"与朋友或电脑对战，支持 3×3、6×6、9×9 霓虹棋盘。",g5:"Hop Road",d5:"跳过车流和河流，别被撞飞。你能走多远？",play:"开始",soon:"即将推出",f:"没有更多可滑了，去玩吧。",fc:"开始游戏",foot:"© Play — 浏览器游戏"}
+};
+var N={en:"English",ar:"العربية",es:"Español",fr:"Français",de:"Deutsch",zh:"中文"},sel=document.getElementById("lang");
+Object.keys(L).forEach(function(k){var o=document.createElement("option");o.value=k;o.textContent=N[k];sel.appendChild(o)});
+function set(l){var t=L[l],d=document.documentElement;
+d.lang=l;d.dir=l==="ar"?"rtl":"ltr";
+document.querySelectorAll("[data-t]").forEach(function(e){e.textContent=t[e.dataset.t]});
+var w=t.m.split("|"),h="";for(var i=0;i<8;i++)w.forEach(function(x){h+="<span>"+x+"</span><span>✦</span>"});
+document.getElementById("track").innerHTML=h;
+document.title="Play — "+t.g1;sel.value=l;tg.setAttribute("aria-label",t.theme);
+try{localStorage.setItem("lang",l)}catch(e){}}
+sel.addEventListener("change",function(){set(sel.value)});
+(function(){var K=["pad","joy","dice","star","coin","dpad","tro","tri"],
+Q=[["left:3%;top:10%",64,-14],["right:3%;bottom:10%",56,16],["left:9%;bottom:6%",44,10],["right:10%;top:8%",40,-8]];
+document.querySelectorAll(".feat,.cta").forEach(function(sec,i){var h='<div class="deco" aria-hidden="true">';
+Q.forEach(function(q,j){h+='<svg class="ic" style="'+q[0]+';--s:'+q[1]+'px;--r:'+q[2]+'deg"><use href="#i-'+K[(i*3+j)%K.length]+'"/></svg>'});
+sec.insertAdjacentHTML("afterbegin",h+"</div>")})})();
+// TODO: replace with your own PayPal.me or donate link
+var PAYPAL="https://paypal.me/AhmedEmad841";
+var tg=document.getElementById("tg"),R=document.documentElement,th=null;
+try{th=localStorage.getItem("theme")}catch(e){}
+if(!th)th=matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";
+function paint(){R.dataset.theme=th;tg.setAttribute("aria-pressed",th==="dark")}
+tg.onclick=function(){th=th==="dark"?"light":"dark";paint();try{localStorage.setItem("theme",th)}catch(e){}};
+paint();
+var dlg=document.getElementById("dlg"),dsp=document.getElementById("dsp");
+document.getElementById("ppl").href=PAYPAL;
+document.getElementById("lg").onclick=function(){document.getElementById("nt").hidden=true;dlg.showModal()};
+document.getElementById("sp").onclick=function(){dsp.showModal()};
+document.getElementById("c1").onclick=function(){dlg.close()};
+document.getElementById("c2").onclick=function(){dsp.close()};
+document.getElementById("lf").onsubmit=function(e){e.preventDefault();document.getElementById("nt").hidden=false};
+var s="en";try{s=localStorage.getItem("lang")||"en"}catch(e){}
+set(L[s]?s:"en");
+</script>
+</body>
+</html>
